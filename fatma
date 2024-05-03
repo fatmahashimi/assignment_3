@@ -1,0 +1,241 @@
+# code 
+
+
+from datetime import datetime
+
+# Base Employee class with common attributes and methods
+class Employee:
+    def __init__(self, employeeID, name, department, jobTitle, basicSalary, dateOfBirth, passportDetails):
+        self.employeeID = employeeID
+        self.name = name
+        self.department = department
+        self.jobTitle = jobTitle
+        self.basicSalary = basicSalary
+        self.dateOfBirth = datetime.strptime(dateOfBirth, "%Y-%m-%d")  # Converts string to datetime
+        self.passportDetails = passportDetails
+
+    def addEmployee(self):
+        print(f"Added Employee: {self.name}")
+
+    def updateEmployee(self):
+        print(f"Updated Employee: {self.name}")
+
+    def deleteEmployee(self):
+        print(f"Deleted Employee: {self.name}")
+
+    def retrieveEmployee(self):
+        print(f"Employee Details: ID {self.employeeID}, Name {self.name}")
+
+# Specialized Employee classes with specific responsibilities
+class Designer(Employee):
+    def designEventThemes(self):
+        print(f"{self.name} designs event themes.")
+
+    def prepareDesignProposals(self):
+        print(f"{self.name} prepares design proposals.")
+
+class SalesManager(Employee):
+    def assignSalesTarget(self):
+        print(f"{self.name} assigns sales targets.")
+
+class Salesperson(Employee):
+    def recordSale(self):
+        print(f"{self.name} records a sale.")
+
+class Handyman(Employee):
+    def performMaintenanceTasks(self):
+        print(f"{self.name} performs maintenance tasks.")
+
+class MarketingManager(Employee):
+    def developMarketingPlan(self):
+        print(f"{self.name} develops a marketing plan.")
+
+class Marketer(Employee):
+    def conductMarketResearch(self):
+        print(f"{self.name} conducts market research.")
+
+class Accountant(Employee):
+    def prepareFinancialStatements(self):
+        print(f"{self.name} prepares financial statements.")
+
+# Client class to represent event clients
+class Client:
+    def __init__(self, clientID, name, address, contactDetails):
+        self.clientID = clientID
+        self.name = name
+        self.address = address
+        self.contactDetails = contactDetails
+
+# Event class to hold event details
+class Event:
+    def __init__(self, eventID, type, theme, date, time, duration, budget):
+        self.eventID = eventID
+        self.type = type
+        self.theme = theme
+        self.date = date
+        self.time = time
+        self.duration = duration
+        self.budget = budget
+
+# Guest class to manage event guests
+class Guest:
+    def __init__(self, guestID, name, address, contactDetails):
+        self.guestID = guestID
+        self.name = name
+        self.address = address
+        self.contactDetails = contactDetails
+
+# Invoice class for billing purposes
+class Invoice:
+    def __init__(self, invoiceID, amount, date, eventID):
+        self.invoiceID = invoiceID
+        self.amount = amount
+        self.date = date
+        self.eventID = eventID
+
+# Supplier class to manage event suppliers
+class Supplier:
+    def __init__(self, supplierID, name, address, contactDetails):
+        self.supplierID = supplierID
+        self.name = name
+        self.address = address
+        self.contactDetails = contactDetails
+
+# Venue class to manage event locations
+class Venue:
+    def __init__(self, venueID, name, address, contactDetails, capacity):
+        self.venueID = venueID
+        self.name = name
+        self.address = address
+        self.contactDetails = contactDetails
+        self.capacity = capacity
+
+# Main section to demonstrate the functionality
+if __name__ == "__main__":
+    designer = Designer(1, "Alyssa Johnson", "Design", "Senior Designer", 70000, "1990-07-22", "D1234567")
+    sales_manager = SalesManager(2, "Matt Smith", "Sales", "Sales Manager", 80000, "1985-05-15", "SM123456")
+    designer.addEmployee()
+    designer.designEventThemes()
+    designer.prepareDesignProposals()
+    sales_manager.addEmployee()
+    sales_manager.assignSalesTarget()
+
+    handyman = Handyman(3, "Charlie Brown", "Maintenance", "Handyman", 50000, "1988-10-30", "HM987654")
+    marketing_manager = MarketingManager(4, "David Lee", "Marketing", "Marketing Manager", 85000, "1980-03-12", "MM456789")
+    marketer = Marketer(5, "Eve Adams", "Marketing", "Marketer", 60000, "1992-12-05", "MK123789")
+    accountant = Accountant(6, "Franklin Rodriguez", "Finance", "Accountant", 75000, "1983-08-18", "AC876543")
+
+    handyman.addEmployee()
+    handyman.performMaintenanceTasks()
+    marketing_manager.addEmployee()
+    marketing_manager.developMarketingPlan()
+    marketer.addEmployee()
+    marketer.conductMarketResearch()
+    accountant.addEmployee()
+    accountant.prepareFinancialStatements()
+
+    client = Client(1, "ABC Corp", "123 Main St", "123-456-7890")
+    event = Event(1, "Conference", "Tech Expo", "2024-06-15", "09:00", 8, 50000)
+    guest = Guest(1, "John Doe", "456 Elm St", "987-654-3210")
+    invoice = Invoice(1, 25000, "2024-06-20", 1)
+    supplier = Supplier(1, "XYZ Supplies", "789 Oak St", "456-789-0123")
+    venue = Venue(1, "Grand Hall", "100 Broadway", "654-321-0987", 500)
+
+
+
+    # code
+
+
+
+    # Importing necessary modules
+import tkinter as tk
+from tkinter import messagebox, simpledialog
+import pickle
+import os
+
+# Define paths for data storage files
+data_paths = {
+    'employee': 'employees.dat',
+    'event': 'events.dat',
+    'client': 'clients.dat',
+    'guest': 'guests.dat',
+    'supplier': 'suppliers.dat',
+    'venue': 'venues.dat'
+}
+
+# Helper functions to load and save data
+def load_data(data_type):
+    """Loads data from the specified data storage file."""
+    try:
+        with open(data_paths[data_type], 'rb') as file:
+            return pickle.load(file)
+    except (FileNotFoundError, EOFError):
+        return {}
+
+def save_data(data, data_type):
+    """Saves data to the specified data storage file."""
+    with open(data_paths[data_type], 'wb') as file:
+        pickle.dump(data, file)
+
+# GUI Application
+class EventManagementApp(tk.Tk):
+    """Main application class for the Event Management System."""
+    def __init__(self):
+        super().__init__()
+        self.title("Event Management System")
+        self.geometry("500x300")
+
+        # Creating menu
+        menu = tk.Menu(self)
+        self.config(menu=menu)
+        
+        # Creating sub-menu for managing data
+        manage_menu = tk.Menu(menu, tearoff=0)
+        menu.add_cascade(label="Manage", menu=manage_menu)
+        manage_menu.add_command(label="Add/Modify Details", command=self.add_modify_details)
+        manage_menu.add_command(label="Delete Details", command=self.delete_details)
+        manage_menu.add_command(label="Display Details", command=self.display_details)
+    
+    def add_modify_details(self):
+        """Method to add or modify details for various types."""
+        type = simpledialog.askstring("Input", "Enter type (employee, event, client, guest, supplier, venue):")
+        if type in data_paths:
+            data = load_data(type)
+            id = simpledialog.askstring("Input", f"Enter {type} ID:")
+            name = simpledialog.askstring("Input", f"Enter {type} Name:")
+            data[id] = name  # Simplified, you can expand this to include more details
+            save_data(data, type)
+            messagebox.showinfo("Success", f"{type.capitalize()} details added/modified successfully.")
+        else:
+            messagebox.showerror("Error", "Invalid type entered.")
+    
+    def delete_details(self):
+        """Method to delete details for specified types."""
+        type = simpledialog.askstring("Input", "Enter type (employee, event, client, guest, supplier, venue):")
+        if type in data_paths:
+            data = load_data(type)
+            id = simpledialog.askstring("Input", f"Enter {type} ID to delete:")
+            if id in data:
+                del data[id]
+                save_data(data, type)
+                messagebox.showinfo("Success", f"{type.capitalize()} deleted successfully.")
+            else:
+                messagebox.showerror("Error", "ID not found.")
+        else:
+            messagebox.showerror("Error", "Invalid type entered.")
+    
+    def display_details(self):
+        """Method to display details for specified types."""
+        type = simpledialog.askstring("Input", "Enter type (employee, event, client, guest, supplier, venue):")
+        if type in data_paths:
+            data = load_data(type)
+            display_text = "\n".join([f"ID: {id}, Name: {name}" for id, name in data.items()])
+            messagebox.showinfo("Data", display_text if display_text else "No data available.")
+        else:
+            messagebox.showerror("Error", "Invalid type entered.")
+
+# Main program entry point
+if __name__ == "__main__":
+    app = EventManagementApp()
+    app.mainloop()
+
